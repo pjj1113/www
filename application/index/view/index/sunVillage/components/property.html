@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.14/vue.common.dev.js"></script>
+  <link href="__CDN__/assets/szxc/style/index.css" rel="stylesheet" />
+  <!-- 引入样式 -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <!-- 引入组件库 -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+<style>
+.property {
+  height: 100%;
+  width: 100%;
+}
+.property .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  width: 100%;
+  height: 40px;
+  box-sizing: border-box;
+  background: #409eff;
+}
+.property .header span {
+  color: #fff;
+}
+.property .header span i {
+  color: #fff;
+}
+.property .opertion {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 30px;
+  background: #ddd;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.property .opertion span {
+  position: relative;
+  color: #fff;
+  display: inline-block;
+  padding: 3px 8px;
+  margin-left: 15px;
+}
+.property .opertion span strong {
+  display: flex;
+  flex-direction: column;
+  width: 100px;
+  position: absolute;
+  top: 35px;
+  left: 0;
+  padding: 6px 15px;
+  border: 1px solid #999;
+}
+.property .opertion span strong i {
+  color: #999;
+  font-weight: 400;
+  font-style: normal;
+  cursor: pointer;
+}
+.property .opertion span:nth-child(1) {
+  background: #409eff;
+}
+.property .opertion span:nth-child(2) {
+  background: #67c23a;
+}
+.property .opertion span:nth-child(3) {
+  background: #909399;
+}
+.property .mian {
+  width: 100%;
+  height: calc(30%);
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+.property .mian .property {
+  display: flex;
+  justify-content: center;
+}
+.property .mian .property strong {
+  color: #909399;
+  font-weight: 400;
+}
+
+</style>
+
+<body>
+  <div id="app">
+    <div class="property">
+      <div class="header">
+        <strong>三资管理</strong>
+        <span @click="$router.go(-1)"><i class="el-icon-arrow-left"></i>返回</span>
+      </div>
+      <div class="opertion">
+        <span @click="status = 1">资产</span>
+        <span @click="status = 2">资源</span>
+        <span class="fund" @click="status = 3">资金
+          <strong v-if="false">
+            <i>资金汇总</i>
+            <i>资金汇总</i>
+          </strong>
+        </span>
+      </div>
+      <div class="mian">
+        <div v-show="status== 1" class="property">暂时没有信息</div>
+        <div v-show="status== 2">
+          <h3>xx村集体资产情况</h3>
+          <p v-for="(item, index) in resource" :key="index">{{ item }}</p>
+        </div>
+        <div v-show="status== 3">
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="module">
+    var app = new Vue({
+      el: '#app',
+      data() {
+        return {
+          status: 1,
+          property: null,
+          resource: [
+            '2015年村级固定资产：146290.00元。',
+            '2016年村级固定资产：196290.00元。',
+            '2017年村级固定资产：362060.00元。'
+          ]
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

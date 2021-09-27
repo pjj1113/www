@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.14/vue.common.dev.js"></script>
+  <script src="http://api.tianditu.gov.cn/api?v=4.0&tk=ae735d13cbec178839eb32925ca76e7c"
+    type="text/javascript"></script>
+  <link href="__CDN__/assets/szxc/style/index.css" rel="stylesheet" />
+  <link href="__CDN__/assets/szxc/style/home.less" rel="stylesheet" />
+  <!-- 引入样式 -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <!-- 引入组件库 -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+<style>
+  .home {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  background: url('/assets/szxc/assets/img/xx_bg.2ac84150.jpg') no-repeat;
+}
+.home h2 {
+  width: 40%;
+  height: 50px;
+  background: url('/assets/szxc/assets/img/xx_title.160bedd4.png') no-repeat;
+  background-size: 100% 100%;
+  margin-bottom: 20px;
+}
+.home .tabbar {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 30;
+}
+.home .tabbar .box {
+  position: relative;
+  width: 250px;
+  height: 250px;
+  margin-right: 40px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.home .tabbar .box .content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: rgba(104, 218, 208, 0.5);
+}
+.home .tabbar .box .content i {
+  display: inline-block;
+  width: 130px;
+  height: 93px;
+  transform: scale(0.8);
+  background: url('/assets/szxc/assets/img/nav_icon.b48a76a3.png') 0px -93px no-repeat;
+  background-size: 100%;
+  margin: 0.416667rem 0px 0.197917rem;
+}
+.home .tabbar .box .content span {
+  color: #fff;
+  font-size: 18px;
+}
+.home .tabbar .box ul {
+  position: absolute;
+  left: 0;
+  top: -300px;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  box-sizing: border-box;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.5);
+  transition: top 1s;
+}
+.home .tabbar .box ul li {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+.home .tabbar .box:hover ul {
+  top: 0;
+}
+
+</style>
+<body>
+  <div id="app">
+    <div class="home">
+      <h2></h2>
+      <div class="tabbar">
+        <div class="box" v-for="(item, index) in labelList" :key="index">
+          <ul>
+            <li v-for="(list, index) in item.list" :key="index">
+              <a :href="list.route" :target="list.blank ? '_blank' : ''">{{ list.name }}</a>
+            </li>
+          </ul>
+          <div class="content">
+            <i></i>
+            <span>{{ item.title }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="module">
+    var app = new Vue({
+      el: '#app',
+      data() {
+        return {
+          labelList: [
+            {
+              title: '数字乡村', icon: '', show: false, list: [
+                { name: '数字乡村一张图', route: '/platform' },
+                { name: '农村宅基地管理', route: '#' },
+                { name: '智慧农业', route: '#' },
+                { name: '特色产业', route: '#' },
+                { name: '食品溯源', route: '#' },
+                { name: '蓝天卫视', route: '#' },
+                { name: '三资管理', route: '#' }
+              ]
+            },
+            {
+              title: '数字治理', icon: '', show: false, list: [
+                { name: '智慧建党', route: 'https://www.aidjyun.com/portal/login', blank: true },
+                { name: '阳光村务', route: '/sunVillage' },
+                { name: '智慧城管', route: '#' },
+                { name: '雪亮工程', route: '#' },
+                { name: '智慧交通', route: '#' },
+                { name: '微单元治理', route: '#' },
+              ]
+            },
+            {
+              title: '民生服务', icon: '', show: false, list: [
+                { name: '政务服务', route: '#' },
+                { name: '智慧医疗', route: '#' },
+                { name: '智慧教育', route: '#' },
+                { name: '智慧社区', route: '#' },
+                { name: '智慧养老', route: 'http://39.99.202.55:6655/Home/index', blank: true },
+              ]
+            }
+          ]
+        }
+      },
+      mounted() {
+
+      },
+      methods: {
+
+      }
+    })
+  </script>
+</body>
+
+</html>

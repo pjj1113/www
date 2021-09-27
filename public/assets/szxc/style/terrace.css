@@ -1,0 +1,136 @@
+.terrace {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: url('/assets/szxc/assets/img/main_bg.9cb3d9f2.png') no-repeat;
+  background-size: 100% 100%;
+}
+.terrace .header {
+  width: 100%;
+  height: 60px;
+  background: url('/assets/szxc/assets/img/title_bg.ed91aa7c.png') no-repeat;
+  background-size: 100% 100%;
+}
+.terrace .mian {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding-top: 60px;
+  display: flex;
+  justify-content: space-between;
+  height: calc(40%);
+  width: 100%;
+}
+.terrace .mian .left-content {
+  position: relative;
+  width: 300px;
+  height: 100%;
+  padding-left: 40px;
+  background: linear-gradient(90deg, rgba(41, 82, 125, 0.8), rgba(41, 82, 125, 0));
+}
+.terrace .mian .left-content::after {
+  position: absolute;
+  left: 0;
+  top: 0;
+  content: '';
+  width: 45px;
+  height: 100%;
+  background: url('/assets/szxc/assets/img/left_right_line.8db324c1.png') no-repeat;
+  background-size: 100% 100%;
+}
+.terrace .mian .left-content .info {
+  display: flex;
+  flex-direction: column;
+}
+.terrace .mian .left-content .info h2 {
+  height: 30px;
+  background: url('/assets/szxc/assets/img/sub_title_bg_left.a2aa471e.png') no-repeat;
+  background-size: 100% 100%;
+  color: #fff;
+  line-height: 30px;
+  padding-left: 30px;
+  font-weight: 600;
+  font-size: 14px;
+}
+.terrace .mian .left-content .info .info-detail {
+  width: 100%;
+  height: 170px;
+  background: url('/assets/szxc/assets/img/sub_content_bg.ba60007b.png') no-repeat;
+  background-size: 100% 100%;
+  margin: 10px;
+}
+.terrace .mian .right-content {
+  position: relative;
+  width: 300px;
+  height: 100%;
+  padding-left: 40px;
+  background: linear-gradient(-90deg, rgba(41, 82, 125, 0.8), rgba(41, 82, 125, 0));
+  padding-right: 40px;
+}
+.terrace .mian .right-content::after {
+  position: absolute;
+  right: 0;
+  top: 0;
+  content: '';
+  width: 45px;
+  height: 100%;
+  background: url('/assets/szxc/assets/img/left_right_line.8db324c1.png') no-repeat;
+  background-size: 100% 100%;
+  transform: scaleX(-1);
+}
+.terrace .mian .right-content .property {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  height: 200px;
+}
+.terrace .mian .right-content .property h2 {
+  height: 30px;
+  background: url('/assets/szxc/assets/img/sub_title_bg_right.19d2c3c0.png') no-repeat;
+  background-size: 100% 100%;
+  color: #fff;
+  line-height: 30px;
+  padding-left: 30px;
+  font-weight: 600;
+  font-size: 14px;
+  text-align: right;
+  padding-right: 30px;
+}
+.terrace .mian .right-content .property .property-detail {
+  height: 170px;
+  width: 100%;
+  background: url('/assets/szxc/assets/img/sub_content_bg.ba60007b.png') no-repeat;
+  background-size: 100% 100%;
+  margin-top: 10px;
+}
+
+
+/* 
+
+*/
+.annular {
+  width: 200px;
+  height: 200px;
+}
+#annular {
+  width: 200px;
+  height: 200px;
+}
+.dynamic {
+  width: 300px;
+  height: 300px;
+}
+#dynamic {
+  width: 300px;
+  height: 200px;
+}
+
+
+.histogram {
+  width: 300px;
+  height: 200px;
+}
+#histogram {
+  width: 300px;
+  height: 200px;
+}

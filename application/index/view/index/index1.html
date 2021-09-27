@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.14/vue.common.dev.js"></script>
+    <script src="http://api.tianditu.gov.cn/api?v=4.0&tk=ae735d13cbec178839eb32925ca76e7c" type="text/javascript"></script>
+    <link href="__CDN__/assets/less/index.less"/>
+</head>
+
+<body>
+    <div id="app">
+        <div class="platform">
+            <div class="header">
+                <!-- <strong>固始县农业一张图农业数据展示平台</strong>
+                <span @click="getMonitorList"><i class="el-icon-arrow-left"></i>返回</span> -->
+            </div>
+            <div class="main">
+                <div class="main-left"></div>
+                <div class="main-right">
+                    <div id="mapDiv" style="width: 100%; height: 100%"></div>
+                    <ul>
+                        <li v-for="(item, index) in list" :key="index">
+                            <i class="el-icon-school"></i>
+                            <!-- <router-link :to="item.path">{{ item.name }}</router-link> -->
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <style>
+        html,body,#app, .platform{
+            width: 100%;
+            height: 100%;
+        }
+        .main {
+            width: 100%;
+            height: 100%;
+        }
+        .main-right {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <!-- <script type="module" src="_CDN__/assets/utils/data.js"></script> -->
+    <script src="__CDN__/assets/szxc/utils/TMap.js"></script>
+    <script type="module">
+        // import { TMap } from '/utils/TMap.js'
+        import { xingxianData } from '/assets/szxc/utils/data.js'
+        import { mapDate } from "/assets/szxc/utils/mapData.js"
+        import { gushiData } from '/assets/szxc/utils/mapGsData.js'
+        var app = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    jobBasicList: [],
+                    jobMonitorList: [],
+                    list: [
+                        { name: '数字乡村', path: '/platform/map' },
+                        { name: '数字菌园', path: '/digitization/culture' },
+                        { name: '数字田园', path: '' },
+                        { name: '数字果园', path: '' },
+                        { name: '数字菜园', path: '' },
+                        { name: '数字茶园', path: '' },
+                        { name: '数字药园', path: '' },
+                        { name: '数字花园', path: '' },
+                        { name: '数字牧场', path: '' },
+                        { name: '数字渔场', path: '' },
+                    ],
+                    jobBasicOptionMap: {
+                        '1': {
+                            zoom: 8,
+                            lng: 115.81782149000003,
+                            lat: 32.008200432000024,
+                            options: {
+                                color: "blue",
+                                fillColor: "#FFFFFF",
+                                fillOpacity: 0.5
+                            }
+                        },
+                        '2': {
+                            options: {
+                                color: "#0000FF",
+                                opacity: 0.5,
+                                weight: 10
+                            }
+                        },
+                        '3': {
+                            zoom: 14,
+                            lng: 115.81782149000003,
+                            lat: 31.644109209251166,
+                            options: {
+                                color: "#FFFF00",
+                                fillColor: '#0000FF',
+                                fillOpacity: 0.5
+                            }
+                        },
+                        '4': {
+                            zoom: 15,
+                            lng: 114.87912370304109,
+                            lat: 31.644109209251166,
+                            options: {
+                                color: "#FF0000",
+                                opacity: 1,
+                                lineStyle: 'dashed'
+                            }
+                        },
+                        '5': {
+                            options: {
+                                color: "#0000FF",
+                                opacity: 0.5,
+                                weight: 10
+                            }
+                        }
+                    },
+                    // 水利工程图标映射
+                    jobIconMap: {
+                        project: {
+                            '1': 'reservoir',
+                            '2': 'dam',
+                            '3': 'sluice',
+                            '4': 'pump'
+                        },
+                        monitor: {
+                            '1': 'reservoir',
+                            '2': 'rain',
+                            '3': 'quality',
+                            '4': 'section',
+                            '5': 'power'
+                        },
+                        video: {
+                            '1': 'hydrology',
+                            '2': 'protection',
+                            '3': 'djbasin'
+                        },
+                        public: {
+                            '1': 'public',
+                            '2': 'public2'
+                        }
+                    },
+                }
+            },
+            mounted() {
+                this.initMap();
+            },
+            methods: {
+                initMap() {
+                    this.tMap = new TMap("mapDiv", T);
+                    console.log(TMap)
+                    this.tMap.vm = this;
+                    this.tMap.addMapControl(["scale"]);//["mapType", "zoom", "scale"]
+                    this.getBasicList()
+                    // this.getMonitorList()
+                },
+                // 获取基础数据-- 添加地图边界
+                getBasicList() {
+                    var that = this
+                    // 1.清除覆盖物
+                    if (that.tMap.jobBasicOverLays && that.tMap.jobBasicOverLays.length) {
+                        var overLays = that.tMap.jobBasicOverLays
+                        for (var i = 0; i < overLays.length; i++) {
+                            var overlay = overLays[i]
+                            that.tMap.removeOverLay(overlay)
+                        }
+                        delete that.tMap.jobBasicOverLays
+                    }
+                    let data = [
+                        {
+                            id: "6",
+                            lnglatList: mapDate,
+                            mark: "测试数据",
+                            moduleType: "basic",
+                            name: "测试数据",
+                            shoreType: "测试",
+                            type: "4",
+                        }
+                    ]
+                    gushiData.forEach(item => {
+                        data.push({
+                            id: "6",
+                            lnglatList: item.lnglatList,
+                            properties: item.properties,
+                            mark: "测试数据",
+                            moduleType: "basic",
+                            name: "测试数据",
+                            shoreType: "测试",
+                            type: "4",
+                        })
+                    })
+                    // return
+                    // 2.再重新添加的覆盖物
+                    console.log(data)
+                    that.jobBasicList = data;
+
+                    // 设置模块名称，用于区分窗口属性映射关系keyMap的设置
+                    that.tMap.topModuleType = 'job'
+                    that.tMap.moduleType = 'basic'
+
+                    for (var i = 0; i < that.jobBasicList.length; i++) {
+                        var item = that.jobBasicList[i]
+                        var type = item.type
+                        var lnglatList = item.lnglatList
+
+                        // 为标注点的属性添加模块的名称，用于弹窗获取映射中文属性名，修复切换顶级模块后（没有重新设置moduleType，导致模块名不对应），弹窗内容显示的问题
+                        item.moduleType = 'basic'
+
+                        // 构建坐标点列表
+                        var points = that.tMap.buildPoints(lnglatList)
+
+                        // 添加覆盖物并返回覆盖物
+                        var option = this.getOptionBytype(type)
+                        var method = this.getOverlayMethodBytype(type)
+                        var zoom = option && option.zoom ? option.zoom : that.tMap.zoom
+                        var lng = option && option.lng ? option.lng : that.tMap.lng
+                        var lat = option && option.lat ? option.lat : that.tMap.lat
+                        var options = option && option.options ? option.options : {}
+
+                        var overlay = that.tMap[method](points, item, options)
+
+                        that.tMap.centerAndZoom(lng, lat, zoom)
+
+                        // 将基础覆盖物保存起来
+                        if (!that.tMap.jobBasicOverLays) {
+                            that.tMap.jobBasicOverLays = []
+                        }
+
+                        that.tMap.jobBasicOverLays.push(overlay)
+
+                        // 将覆盖物保存起来
+                        if (type === '2') {
+                            if (!that.tMap.jobBasicTopRiverOverLays) {
+                                that.tMap.jobBasicTopRiverOverLays = []
+                            }
+                            that.tMap.jobBasicTopRiverOverLays.push(overlay)
+                        }
+                    }
+                    // 
+                },
+
+                // 打点 - 在地图中标记某个点
+                // 获取水务监测站数据
+                getMonitorList() {
+                    var that = this
+                    // 1.先清除现有的水务监测站的覆盖物
+                    if (that.tMap.jobMonitorOverLays && that.tMap.jobMonitorOverLays.length) {
+                        var overLays = that.tMap.jobMonitorOverLays
+                        for (var i = 0; i < overLays.length; i++) {
+                            var overlay = overLays[i]
+                            that.tMap.removeOverLay(overlay)
+                        }
+                        delete that.tMap.jobMonitorOverLays
+                    }
+                    that.jobMonitorList = gushiData.filter((i, index) => index % 3 == 0).map(item => ({
+                        administrativeDivis: "惠州",
+                        basinName: "东江流域",
+                        completionDate: "1997年1月29日",
+                        drainageName: "东江",
+                        id: "5",
+                        initialStageDate: "1999年1月29日",
+                        lnglat: item.lnglatList[0],
+                        mark: "没有备注",
+                        moduleType: "monitor",
+                        organ: "管理单位A",
+                        riverName: "东江",
+                        stationAddress: "站址不了解",
+                        stationName: "水质站A",
+                        stationType: "站类是哪个",
+                        targetWaterQuality: "5",
+                        type: "3",
+                    }))
+                    console.log(that.jobMonitorList)
+                    // 设置模块名称，用于区分窗口属性映射关系keyMap的设置
+
+                    that.tMap.topModuleType = 'job'
+                    that.tMap.moduleType = 'monitor'
+                    for (var i = 0; i < that.jobMonitorList.length; i++) {
+                        var item = that.jobMonitorList[i]
+                        var lnglat = item.lnglat
+                        // 构建坐标点列表
+                        var point = that.tMap.buildPoint(lnglat)
+                        var iconUrl = that.getIconBytype(that.tMap.moduleType, item.type)
+
+                        // 为标注点的属性添加模块的名称，用于弹窗获取映射中文属性名，修复切换顶级模块后（没有重新设置moduleType，导致模块名不对应），弹窗内容显示的问题
+                        item.moduleType = 'monitor'
+
+                        // 添加覆盖物并返回覆盖物
+                        var overlay = that.tMap.addMarker(point, item, iconUrl)
+
+                        // 将水利基础覆盖物保存起来
+                        if (!that.tMap.jobMonitorOverLays) {
+                            that.tMap.jobMonitorOverLays = []
+                        }
+                        that.tMap.jobMonitorOverLays.push(overlay)
+                    }
+                },
+                // 根据类别获取图标
+                getIconBytype(moduleType, type) {
+                    return this.jobIconMap[moduleType][type]
+                },
+
+
+                // 根据基础类别获取覆盖物样式
+                getOptionBytype(type) {
+                    return this.jobBasicOptionMap[type]
+                },
+                // 根据基础类别获取覆盖物类型
+                getOverlayMethodBytype(type) {
+                    if (type === '1' || type === '3') {
+                        return 'addPolygon'
+                    } else if (type === '2' || type === '4') {
+                        return 'addPolyline'
+                    }
+                },
+            }
+        })
+    </script>
+</body>
+
+</html>

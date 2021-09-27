@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.14/vue.common.dev.js"></script>
+  <link href="__CDN__/assets/szxc/style/index.css" rel="stylesheet" />
+  <!-- 引入样式 -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <!-- 引入组件库 -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+<style>
+  .finance {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .finance .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    width: 100%;
+    height: 40px;
+    box-sizing: border-box;
+    background: #409eff;
+  }
+
+  .finance .header span {
+    color: #fff;
+  }
+
+  .finance .header span i {
+    color: #fff;
+  }
+
+  .finance .opertion {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    background: #ddd;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .finance .mian {
+    width: 100%;
+    height: calc(30%);
+    box-sizing: border-box;
+    padding: 20px;
+    overflow: auto;
+  }
+</style>
+
+<body>
+  <div id="app">
+    <div class="finance">
+      <div class="header">
+        <strong>财务公开</strong>
+        <span @click="$router.go(-1)"><i class="el-icon-arrow-left"></i>返回</span>
+      </div>
+      <div class="opertion">
+        财务公开
+      </div>
+      <div class="mian">
+        <el-row>
+          <el-select v-model="value" placeholder="请选择">
+            <el-option v-for="item in options" :key="item" :label="item" :value="item">
+            </el-option>
+          </el-select>
+        </el-row>
+        <el-table :data="tableData" style="width: 100%">
+          <el-table-column align="center" prop="revenue" label="收入"></el-table-column>
+          <el-table-column align="center" prop="revenue" label="支出"></el-table-column>
+        </el-table>
+        <el-pagination style="margin-top:30px;float:right" @size-change="handleSizeChange"
+          @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[10, 20]" :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper" :total="total">
+        </el-pagination>
+      </div>
+    </div>
+  </div>
+  <script type="module">
+    var app = new Vue({
+      el: '#app',
+      data() {
+        return {
+          value: '2021',
+          property: null,
+          options: ['2015', '2016', '2017', '2018', '2019', '2020', '2021'],
+          tableData: [{ revenue: '2020年三月份收入明细表', expense: '2020年三月份支出明细表' }],
+          currentPage: 0,
+          pageSize: 20,
+          total: 0
+        }
+      },
+      components: {
+
+      },
+      mounted() {
+        let arr = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二']
+        this.tableData = arr.map(item => ({ revenue: `2020年${item}月份收入明细表`, expense: `2020年${item}月份支出明细表` }))
+        this.total = this.tableData.length
+      },
+      methods: {
+        handleCurrentChange(val) {
+          this.pageSize = val;
+          console.log(val)
+        },
+        handleSizeChange(val) {
+          this.currentPage = val;
+          console.log(val)
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

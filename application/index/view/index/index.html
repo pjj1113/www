@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.14/vue.common.dev.js"></script>
+  <link href="__CDN__/assets/szxc/style/index.css" rel="stylesheet" />
+  <!-- 引入样式 -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <!-- 引入组件库 -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+<style>
+.PartyAffairs {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+.PartyAffairs .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  width: 100%;
+  height: 40px;
+  box-sizing: border-box;
+  background: #409eff;
+}
+.PartyAffairs .header span {
+  color: #fff;
+}
+.PartyAffairs .header span i {
+  color: #fff;
+}
+.PartyAffairs .opertion {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  background: #ddd;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.PartyAffairs .mian {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+}
+.PartyAffairs .mian ul {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  height: auto;
+  border: 1px solid #c9c9c9;
+  border-bottom: none;
+  margin-top: 20px;
+}
+.PartyAffairs .mian ul li {
+  line-height: 30px;
+  border-bottom: 1px solid #c9c9c9;
+  text-align: center;
+}
+
+</style>
+
+<body>
+  <div id="app">
+    <div class="PartyAffairs">
+      <div class="header">
+        <strong>村务公开</strong>
+        <span @click="$router.go(-1)"><i class="el-icon-arrow-left"></i>返回</span>
+      </div>
+      <div class="opertion">
+        村务公开
+      </div>
+      <div class="mian">
+        <ul>
+          <li v-for="(item, index) in list" :key="index">{{ item.title }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <script type="module">
+    var app = new Vue({
+      el: '#app',
+      data() {
+        return {
+          status: 1,
+          property: null,
+          list: [
+            { title: '2021年3月章墩村低保花名册' },
+            { title: '2021年章墩村三月份特困人员发放花名册' },
+            { title: '2021年1月章墩村优抚对象抚恤金发放' },
+            { title: '2020年章墩村奖励辅助对象花名册' },
+            { title: '2020年章墩村奖励辅助对象花名册' },
+          ]
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

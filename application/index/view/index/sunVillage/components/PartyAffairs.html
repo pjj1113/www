@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.14/vue.common.dev.js"></script>
+  <link href="__CDN__/assets/szxc/style/index.css" rel="stylesheet" />
+  <!-- 引入样式 -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <!-- 引入组件库 -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+<style>
+.PartyAffairs {
+  height: 100%;
+  width: 100%;
+}
+.PartyAffairs .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  width: 100%;
+  height: 40px;
+  box-sizing: border-box;
+  background: #409eff;
+}
+.PartyAffairs .header span {
+  color: #fff;
+}
+.PartyAffairs .header span i {
+  color: #fff;
+}
+.PartyAffairs .opertion {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  background: #ddd;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.PartyAffairs .mian {
+  width: 100%;
+  height: calc(30%);
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+.PartyAffairs .mian .conter {
+  width: 400px;
+}
+.PartyAffairs .mian .conter p {
+  text-align: center;
+  height: 40px;
+  width: 400px;
+  border-bottom: 1px solid #e4e4e4;
+  margin-bottom: 30px;
+  font-size: 15px;
+}
+.PartyAffairs .mian .conter ul {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+}
+.PartyAffairs .mian .conter ul li {
+  width: 400px;
+  margin-left: 10px;
+  font-size: 15px;
+}
+
+</style>
+
+<body>
+  <div id="app">
+    <div class="PartyAffairs">
+      <div class="header">
+        <strong>党务公开</strong>
+        <span @click="$router.go(-1)"><i class="el-icon-arrow-left"></i>返回</span>
+      </div>
+      <div class="opertion">
+        党务公开
+      </div>
+      <div class="mian">
+        <div class="conter">
+          <p>党 务 公 开</p>
+          <ul>
+            <li>村“两委”干部任期目标。</li>
+            <li>1、建立一个1000平米的文化广场。</li>
+            <li>2、做好环境整治，绿化村内大小道路。</li>
+            <li>3、修建前湾到扶山2760米的生产路。</li>
+            <li>4、修建一条七孔桥到前湾面前冲到水渠。</li>
+            <li>5、东循环路1公里路面扩宽硬化。</li>
+            <li>6、前湾、七孔桥、扶小湾、郑湾5个村民组的安全饮水。</li>
+            <li>7、高效油茶园的生产路。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="module">
+    var app = new Vue({
+      el: '#app',
+
+    })
+  </script>
+</body>
+
+</html>

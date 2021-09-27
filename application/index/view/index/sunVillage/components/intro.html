@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.14/vue.common.dev.js"></script>
+  <link href="__CDN__/assets/szxc/style/index.css" rel="stylesheet" />
+  <!-- 引入样式 -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <!-- 引入组件库 -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+<style>
+  .intro {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.intro .main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 1360px;
+  height: 768px;
+  margin-top: 50px;
+}
+.intro .main .intro-top {
+  display: flex;
+  height: 30px;
+  width: 150px;
+}
+.intro .main .intro-top span {
+  display: inline-block;
+  line-height: 30px;
+  white-space: nowrap;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #dcdfe6;
+  color: #606266;
+  font-weight: 500;
+  padding: 0 15px;
+  font-size: 15px;
+  border-radius: 5px;
+  box-sizing: border-box;
+  margin-right: 30px;
+}
+.intro .main .intro-top .acttive_btn {
+  color: #fff;
+  background-color: #409eff;
+  border-color: #409eff;
+}
+.intro .main .intro-bottom {
+  width: calc(50%);
+  height: 100%;
+  display: flex;
+  justify-content: center;
+}
+.intro .main .intro-bottom p {
+  width: 60%;
+  padding-top: 20px;
+  font-size: 15px;
+  line-height: 30px;
+  text-indent: 30px;
+}
+.intro .main .intro-bottom ul {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 900px;
+  height: 400px;
+  padding: 40px;
+  margin-top: 200px;
+  box-sizing: border-box;
+  border: 2px solid rgba(82, 80, 78, 0.8);
+  border-radius: 10px;
+}
+.intro .main .intro-bottom ul::after {
+  position: absolute;
+  left: -20px;
+  top: -150px;
+  height: 541px;
+  width: 200px;
+  background: url('/assets/szxc/assets/img/home.0fe11919.png') no-repeat;
+  background-size: 100% 100%;
+  content: '';
+}
+.intro .main .intro-bottom ul::before {
+  position: absolute;
+  right: -100px;
+  bottom: 0;
+  height: 300px;
+  width: 150px;
+  background: url('/assets/szxc/assets/img/zhuzi.11227c65.png') no-repeat;
+  background-size: 100% 100%;
+  content: '';
+}
+.intro .main .intro-bottom ul li {
+  display: flex;
+  justify-content: space-between;
+}
+.intro .main .intro-bottom ul li span {
+  font-size: 20px;
+  line-height: 60px;
+}
+.active_01 {
+  background: url('/assets/szxc/assets/img/village_bg1.adbf924f.jpg') no-repeat;
+  background-size: 100% 100%;
+}
+.active_02 {
+  background: url('/assets/szxc/assets/img/village_bg_rules.e68b74de.jpg') no-repeat;
+  background-size: 100% 100%;
+}
+
+</style>
+<body>
+  <div id="app">
+    <div class="sunVillage">
+      <div class="intro" :class="active == '1' ? 'active_01': 'active_02'">
+        <div class="main">
+          <div class="intro-top">
+            <span @click="active = '1'" :class="{ acttive_btn: active == '1' }">乡村介绍</span>
+            <span @click="active = '2'" :class="{ acttive_btn: active == '2' }">村规民约</span>
+          </div>
+          <div class="intro-bottom">
+            <p v-if="active == '1'">
+              章墩村位于新县吴陈河镇东部境内，距县城17公里，章墩村总面积2.4平方公里、7个村民组，总人口348户1413人，其中常年在外务工人员600余人，在职村干部4名，党员31名；章墩村处于浅丘陵地区拥有丰富的物产资料，和悠久的历史文化传统，天蓝水清、山清水秀，风景秀丽，章墩村耕地面积993亩，主要从事农业种植业为主，以种植杂交水稻、花生、油菜、等传统作物为主，近年来发展种植中药材200亩、高产油茶700亩、养殖小龙虾300亩、种植香菇5万棒年产香菇10多万斤，几年来在县、镇党委领导的支持下，围绕脱贫攻坚战和乡村振兴工作重心，谋划了产业发展思路、兴办了一些实事，各方面都取得了明显成效，现以逐步发展成为品质人居、休闲体验乡村振兴的示范村。
+            </p>
+            <ul v-else>
+              <li v-for="(item, index) in treatyList" :key="index">
+                <span v-for="(val, j) in item" :key="j">{{ val }}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="module">
+      var app = new Vue({
+        el: '#app',
+        data() {
+          return {
+            active: '1',
+            treatyList: [
+              ['遵国法', '守村规', '公共财', '不可毁', '学科学', '重教育', '反邪教', '不迷信'],
+              ['尊师长', '爱幼小', '对儿女', '不娇惯', '勤致富', '俭持家', '不赌博', '不浪费'],
+              ['邻里间', '和为贵', '相互帮', '不添乱', '夫妇情', '恩爱深', '讲平等', '不吵嘴'],
+              ['外来客', '如亲友', '多帮助', '不欺生', '遵国策', '优生育', '儿和女', '不歧视'],
+              ['讲卫生', '爱环境', '乱堆占', '不可为', '为村邻', '多互助', '义勇为', '不旁观'],
+            ]
+          }
+        }
+      })
+    </script>
+</body>
+
+</html>

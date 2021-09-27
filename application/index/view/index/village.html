@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.14/vue.common.dev.js"></script>
+  <script src="http://api.tianditu.gov.cn/api?v=4.0&tk=ae735d13cbec178839eb32925ca76e7c"
+    type="text/javascript"></script>
+  <link href="__CDN__/assets/szxc/style/index.css" rel="stylesheet" />
+  <link href="__CDN__/assets/szxc/style/village.css" rel="stylesheet" />
+  <!-- 引入样式 -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <!-- 引入组件库 -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+<style>
+
+</style>
+
+<body>
+  <div id="app">
+    <div class="platform">
+      <h2>
+        <strong>数字乡村空间一张图</strong>
+        <span @click="$router.go(-1)"><i class="el-icon-arrow-left"></i>返回</span>
+      </h2>
+      <div class="main">
+        <div class="main-right">
+          <div id="mapDiv" style="width: 100%; height: 100%"></div>
+        </div>
+        <pull-down-box></pull-down-box>
+
+      </div>
+    </div>
+  </div>
+  <script src="__CDN__/assets/szxc/utils/TMap.js"></script>
+  <script type="module">
+    import { xingxianData } from '/assets/szxc/utils/data.js'
+    import { mapDate } from "/assets/szxc/utils/mapData.js"
+    import { gushiData } from '/assets/szxc/utils/mapGsData.js'
+    import { area } from '/assets/szxc/utils/area.js'
+    import { dataProvince } from '/assets/szxc/utils/dataProvince.js'
+    // pullDownBox组件
+    Vue.component('pull-down-box', {
+      template: `
+      <div class="pull-down-box">
+        <div class="pull-list" v-for="(item, i) in dataList" :key="i">
+          <ul v-show="item.flag">
+            <li v-for="(item, index) in item.list" :key="index"> <el-checkbox v-model="item.isSelect">{{ item.name }}</el-checkbox></li>
+          </ul>
+          <a @click="showSelect(i)">{{ item.title }}</a>
+        </div>
+      </div>
+      `,
+      props: {
+        // list: {
+        //   type: Array,
+        //   default:()=>[]
+        // }
+        title: {
+          type: String,
+          default: ''
+        }
+      },
+      data() {
+        return {
+          dataList: [
+            {
+              title: '基础数据',
+              flag: false,
+              list: [
+                { name: '土地规划', isSelect: false },
+                { name: '基本农田', isSelect: false },
+                { name: '高标准农田', isSelect: false },
+                { name: '农村宅基地', isSelect: false },
+                { name: '农村集体建设用地', isSelect: false },
+                { name: '设施农用地', isSelect: false },
+                { name: '三调', isSelect: false },
+                { name: '两区划定', isSelect: false },
+                { name: '土地承包经营权', isSelect: false },
+              ],
+            },
+            {
+              title: '数字产业',
+              flag: false,
+              list: [
+                { name: '章墩产业', isSelect: false },
+                { name: '经营主体', isSelect: false },
+                { name: '香菇', isSelect: false },
+                { name: '再生稻', isSelect: false },
+                { name: '稻 虾', isSelect: false },
+              ],
+            },
+            {
+              title: '乡村环境',
+              flag: false,
+              list: [
+                { name: '垃圾屋', isSelect: false },
+                { name: '垃圾站点池', isSelect: false },
+                { name: '污水井盖', isSelect: false },
+              ],
+            },
+            {
+              title: '乡村服务',
+              flag: false,
+              list: [
+                { name: '村委会', isSelect: false },
+                { name: '乡村卫生站', isSelect: false },
+                { name: '慢病管理', isSelect: false },
+                { name: '避灾场所', isSelect: false },
+                { name: '益农信息社', isSelect: false },
+                { name: '新村部', isSelect: false },
+              ],
+            },
+            {
+              title: '乡村治理',
+              flag: false,
+              list: [
+                { name: '党员户', isSelect: false },
+                { name: '党员户党员户', isSelect: false },
+                { name: '贫困户', isSelect: false },
+                { name: '视频监控', isSelect: false },
+                { name: '环境监测', isSelect: false },
+              ]
+            }
+          ]
+        }
+      },
+      mounted() {
+        document.body.addEventListener('click', (e) => {
+          let infoEle = e.path.some(item => 'pull-list' == item.className)
+          if (infoEle) {
+            this.infoShow = true;
+          } else {
+            this.close()
+          }
+        })
+      },
+      methods: {
+        showSelect(i) {
+          setTimeout(() => {
+            this.dataList[i].flag = !this.dataList[i].flag
+            this.dataList.forEach((itme, index) => {
+              if (index != i) {
+                this.$set(this.dataList[index], 'flag', false)
+              }
+            })
+          })
+        },
+        close() {
+          this.dataList.forEach((item, index) => {
+            this.$set(this.dataList[index], 'flag', false)
+          })
+        }
+      }
+    })
+    
+    var app = new Vue({
+      el: '#app',
+      data() {
+        return {
+          jobBasicList: [],
+          jobMonitorList: [],
+          jobBasicOptionMap: {
+            '1': {
+              zoom: 18,
+              lng: 115.5446416630001,
+              lat: 32.280331197000066,
+              options: {
+                color: "blue",
+                fillColor: "#FFFFFF",
+                fillOpacity: 0.5
+              }
+            },
+            '2': {
+              options: {
+                color: "#0000FF",
+                opacity: 0.5,
+                weight: 10
+              }
+            },
+            '3': {
+              zoom: 18,
+              lng: 115.5446416630001,
+              lat: 32.280331197000066,
+              options: {
+                color: "#FFFF00",
+                fillColor: '#0000FF',
+                fillOpacity: 0.5
+              }
+            },
+            '4': {
+              zoom: 18,
+              lng: 115.5446416630001,
+              lat: 32.280331197000066,
+              options: {
+                color: "#FF0000",
+                opacity: 1,
+                lineStyle: 'dashed'
+              }
+            },
+            '5': {
+              options: {
+                color: "#0000FF",
+                opacity: 0.5,
+                weight: 10
+              }
+            }
+          },
+          //图标映射
+          jobIconMap: {
+            project: {
+              '1': 'reservoir',
+              '2': 'dam',
+              '3': 'sluice',
+              '4': 'pump'
+            },
+            monitor: {
+              '1': 'reservoir',
+              '2': 'rain',
+              '3': 'quality',
+              '4': 'section',
+              '5': 'power',
+              '6': 'szxc'
+            },
+            video: {
+              '1': 'hydrology',
+              '2': 'protection',
+              '3': 'djbasin'
+            },
+            public: {
+              '1': 'public',
+              '2': 'public2'
+            }
+          },
+        }
+      },
+      computed: {
+        dataProvince() {
+          return dataProvince.map(item => item.join(','))
+        }
+      },
+      created() {
+        window.mapZoomChange = (type, target) => {
+          return this.mapZoomChange(type, target);
+        }
+      },
+      mounted() {
+        this.initMap();
+      },
+      methods: {
+        initMap() {
+          this.tMap = new TMap("mapDiv", T);
+          this.tMap.vm = this;
+          this.tMap.addMapControl(["scale"]);//["mapType", "zoom", "scale"]
+          this.getBasicList()
+          this.areaShow()
+          // 
+          this.getMonitorList()
+        },
+        // 覆盖县以外的
+        areaShow() {
+          var that = this
+          var point = dataProvince, point1 = mapDate.map(item => item.split(','))
+          that.tMap.areaShow(point, point1)
+        },
+        //获取体贴放大缩小
+        mapZoomChange(val) {
+          return true
+        },
+        // 获取基础数据-- 添加地图边界
+        getBasicList() {
+          var that = this
+          // 1.清除覆盖物
+          if (that.tMap.jobBasicOverLays && that.tMap.jobBasicOverLays.length) {
+            var overLays = that.tMap.jobBasicOverLays
+            for (var i = 0; i < overLays.length; i++) {
+              var overlay = overLays[i]
+              that.tMap.removeOverLay(overlay)
+            }
+            delete that.tMap.jobBasicOverLays
+          }
+          let data = [
+            {
+              id: "6",
+              lnglatList: mapDate,
+              mark: "测试数据",
+              moduleType: "basic",
+              name: "测试数据",
+              shoreType: "测试",
+              type: "4",
+            }
+          ]
+          gushiData.forEach(item => {
+            data.push({
+              id: "6",
+              lnglatList: item.lnglatList,
+              properties: item.properties,
+              mark: "测试数据",
+              moduleType: "basic",
+              name: "测试数据",
+              shoreType: "测试",
+              type: "4",
+            })
+          })
+          // return
+          // 2.再重新添加的覆盖物
+          that.jobBasicList = data;
+
+          // 设置模块名称，用于区分窗口属性映射关系keyMap的设置
+          that.tMap.topModuleType = 'job'
+          that.tMap.moduleType = 'basic'
+
+          for (var i = 0; i < that.jobBasicList.length; i++) {
+            var item = that.jobBasicList[i]
+            var type = item.type
+            var lnglatList = item.lnglatList
+
+            // 为标注点的属性添加模块的名称，用于弹窗获取映射中文属性名，修复切换顶级模块后（没有重新设置moduleType，导致模块名不对应），弹窗内容显示的问题
+            item.moduleType = 'basic'
+
+            // 构建坐标点列表
+            var points = that.tMap.buildPoints(lnglatList)
+
+            // 添加覆盖物并返回覆盖物
+            var option = this.getOptionBytype(type)
+            var method = this.getOverlayMethodBytype(type)
+            var zoom = option && option.zoom ? option.zoom : that.tMap.zoom
+            var lng = option && option.lng ? option.lng : that.tMap.lng
+            var lat = option && option.lat ? option.lat : that.tMap.lat
+            var options = option && option.options ? option.options : {}
+
+            var overlay = that.tMap[method](points, item, options)
+
+            that.tMap.centerAndZoom(lng, lat, zoom)
+
+            // 将基础覆盖物保存起来
+            if (!that.tMap.jobBasicOverLays) {
+              that.tMap.jobBasicOverLays = []
+            }
+
+            that.tMap.jobBasicOverLays.push(overlay)
+
+            // 将覆盖物保存起来
+            if (type === '2') {
+              if (!that.tMap.jobBasicTopRiverOverLays) {
+                that.tMap.jobBasicTopRiverOverLays = []
+              }
+              that.tMap.jobBasicTopRiverOverLays.push(overlay)
+            }
+          }
+          // 
+        },
+
+        // 打点 - 在地图中标记某个点
+        // 获取监测站数据
+        getMonitorList() {
+          var that = this
+          // 1.先清除现有的的覆盖物
+          if (that.tMap.jobMonitorOverLays && that.tMap.jobMonitorOverLays.length) {
+            var overLays = that.tMap.jobMonitorOverLays
+            for (var i = 0; i < overLays.length; i++) {
+              var overlay = overLays[i]
+              that.tMap.removeOverLay(overlay)
+            }
+            delete that.tMap.jobMonitorOverLays
+          }
+          that.jobMonitorList = gushiData.filter((i, index) => index % 7 == 0).map(item => ({
+            id: "5",
+            lnglat: item.lnglatList[0],
+            moduleType: "monitor",
+            targetWaterQuality: "5",
+            type: "3",
+          }))
+          that.jobMonitorList.push({
+            id: "5",
+            lnglat: '115.5446416630001,32.280331197000066',
+            moduleType: "monitor",
+            targetWaterQuality: "5",
+            type: "6",
+          })
+          // 设置模块名称，用于区分窗口属性映射关系keyMap的设置
+
+          that.tMap.topModuleType = 'job'
+          that.tMap.moduleType = 'monitor'
+          for (var i = 0; i < that.jobMonitorList.length; i++) {
+            var item = that.jobMonitorList[i]
+            var lnglat = item.lnglat
+            // 构建坐标点列表
+            var point = that.tMap.buildPoint(lnglat)
+            var iconUrl = that.getIconBytype(that.tMap.moduleType, item.type)
+
+            // 为标注点的属性添加模块的名称，用于弹窗获取映射中文属性名，修复切换顶级模块后（没有重新设置moduleType，导致模块名不对应），弹窗内容显示的问题
+            item.moduleType = 'monitor'
+
+            // 添加覆盖物并返回覆盖物
+            var overlay = that.tMap.addMarker(point, item, iconUrl)
+
+            // 将基础覆盖物保存起来
+            if (!that.tMap.jobMonitorOverLays) {
+              that.tMap.jobMonitorOverLays = []
+            }
+            that.tMap.jobMonitorOverLays.push(overlay)
+          }
+        },
+        // 根据类别获取图标
+        getIconBytype(moduleType, type) {
+          return this.jobIconMap[moduleType][type]
+        },
+
+
+        // 根据基础类别获取覆盖物样式
+        getOptionBytype(type) {
+          return this.jobBasicOptionMap[type]
+        },
+        // 根据基础类别获取覆盖物类型
+        getOverlayMethodBytype(type) {
+          if (type === '1' || type === '3') {
+            return 'addPolygon'
+          } else if (type === '2' || type === '4') {
+            return 'addPolyline'
+          }
+        },
+      }
+    })
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.14/vue.common.dev.js"></script>
+  <script src="http://api.tianditu.gov.cn/api?v=4.0&tk=ae735d13cbec178839eb32925ca76e7c" type="text/javascript"></script>
+  <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
+  <script src="https://unpkg.com/@jiaminghi/data-view/dist/datav.min.vue.js"></script>
+  <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
+  <link href="__CDN__/assets/szxc/style/index.css" rel="stylesheet" />
+  <link href="__CDN__/assets/szxc/style/terrace.css" rel="stylesheet" />
+  <!-- 引入样式 -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <!-- 引入组件库 -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+<style>
+
+</style>
+
+<body>
+  <div id="app">
+    <div class="terrace">
+      <div class="header"></div>
+      <div style="width:100%;height:100%">
+        <dv-flyline-chart :config="config" style="width:100%;height:100%;" />
+      </div>
+      <div class="mian">
+        <div class="left-content">
+          <div class="info">
+            <h2>村情简介</h2>
+            <div class="info-detail">
+            </div>
+          </div>
+          <div class="info">
+            <h2>人口情况</h2>
+            <annular></annular>
+          </div>
+          <div class="info">
+            <h2>务工情况</h2>
+            <histogram></histogram>
+          </div>
+        </div>
+        <div class="right-content">
+          <div class="property">
+            <h2>资金管理</h2>
+            <div class="property-detail"></div>
+          </div>
+          <div class="property">
+            <h2>乡村产业</h2>
+            <dynamic></dynamic>
+          </div>
+        </div>
+      </div>
+      <div class="footer"></div>
+    </div>
+  </div>
+  <script type="module">
+    // 人口情况
+    Vue.component('annular', {
+      template: `
+      <div class="annular">
+        <div id="annular"></div>
+      </div>
+      `,
+      data() {
+        return {
+        };
+      },
+      mounted() {
+        this.init();
+      },
+      methods: {
+        init() {
+          var option = {
+            series: [
+              {
+                name: "搜索引擎",
+                type: "pie",
+                radius: ["50%", "70%"],
+                avoidLabelOverlap: false,
+                label: {
+                  show: false,
+                  position: "center",
+                },
+                emphasis: {
+                  label: {
+                    show: true,
+                    fontSize: "16",
+                    fontWeight: "bold",
+                  },
+                },
+                labelLine: {
+                  show: false,
+                },
+                data: [
+                  { value: 1048, name: "搜索引擎" },
+                  { value: 735, name: "直接访问" },
+                  { value: 580, name: "邮件营销" },
+                  { value: 484, name: "联盟广告" },
+                ],
+              },
+            ],
+          };
+          var myChart = echarts.init(document.getElementById("annular"));
+          myChart.setOption(option);
+        },
+      },
+    })
+
+    // 务工情况 histogram
+    Vue.component('histogram', {
+      template: `
+      <div class="histogram">
+        <div id="histogram"></div>
+      </div>
+      `,
+      data() {
+        return {};
+      },
+      mounted() {
+        this.init();
+      },
+      methods: {
+        init() {
+          var option = {
+            xAxis: {
+              type: "category",
+              data: ["北京", "天津", "成都"].map((item) => ({
+                value: item,
+                textStyle: { color: "#fff" },
+              })),
+              nameTextStyle: {
+                color: "#fff",
+              },
+              axisLine: {
+                show: false,
+              },
+              axisTick: {
+                show: false,
+              },
+            },
+            yAxis: {
+              type: "value",
+              splitLine: {
+                lineStyle: {
+                  type: "dashed",
+                  color: "#fff",
+                },
+              },
+              axisLabel: {
+                show: true,
+                textStyle: {
+                  color: "#fff",
+                },
+              },
+              nameTextStyle: {
+                color: "#ff0000",
+              },
+            },
+            series: [
+              {
+                data: [120, 200, 150].map((item) => ({
+                  value: item,
+                  borderWidth: 15,
+                  itemStyle: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                      { offset: 0, color: "#2378f7" },
+                      { offset: 0.4, color: "#2378f7" },
+                      { offset: 1, color: "#83bff600" },
+                    ]),
+                    borderRadius: [10, 10, 0, 0],
+                    borderWidth: "100%",
+                  },
+                })),
+                barCategoryGap: "70%",
+                type: "bar",
+              },
+            ],
+          };
+          var myChart = echarts.init(document.getElementById("histogram"));
+          myChart.setOption(option);
+        },
+      },
+    })
+    // 务工情况
+    Vue.component('dynamic', {
+      template: `
+      <div class="dynamic">
+        <div id="dynamic"></div>
+      </div>
+      `,
+      data() {
+        return {};
+      },
+      mounted() {
+        this.init();
+      },
+      methods: {
+        init() {
+          var option = {
+            xAxis: {
+              type: "category",
+              data: ["北京", "天津", "成都"].map((item) => ({
+                value: item,
+                textStyle: { color: "#fff" },
+              })),
+              nameTextStyle: {
+                color: "#fff",
+              },
+              axisLine: {
+                show: false,
+              },
+              axisTick: {
+                show: false,
+              },
+            },
+            yAxis: {
+              type: "value",
+              splitLine: {
+                lineStyle: {
+                  type: "dashed",
+                  color: "#fff",
+                },
+              },
+              axisLabel: {
+                show: true,
+                textStyle: {
+                  color: "#fff",
+                },
+              },
+              nameTextStyle: {
+                color: "#ff0000",
+              },
+            },
+            series: [
+              {
+                data: [120, 200, 150].map((item) => ({
+                  value: item,
+                  borderWidth: 15,
+                  itemStyle: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                      { offset: 0, color: "#2378f7" },
+                      { offset: 0.4, color: "#2378f7" },
+                      { offset: 1, color: "#83bff600" },
+                    ]),
+                    borderRadius: [10, 10, 0, 0],
+                    borderWidth: "100%",
+                  },
+                })),
+                barCategoryGap: "70%",
+                type: "bar",
+              },
+            ],
+          };
+          var myChart = echarts.init(document.getElementById("dynamic"));
+          myChart.setOption(option);
+        },
+      },
+    })
+
+    // 主页面
+    var app = new Vue({
+      el: '#app',
+      data() {
+        return {
+          config: {
+            centerPoint: [0.48, 0.35],
+            points: [
+              [0.52, 0.23],
+              [0.43, 0.29],
+              [0.59, 0.35],
+              [0.53, 0.47],
+              [0.45, 0.54],
+              [0.36, 0.38],
+              [0.62, 0.55],
+              [0.56, 0.56],
+              [0.37, 0.66],
+              [0.55, 0.81],
+              [0.55, 0.67],
+              [0.37, 0.29],
+              [0.20, 0.36],
+              [0.76, 0.41],
+              [0.59, 0.18],
+              [0.68, 0.17],
+              [0.59, 0.10]
+            ],
+            centerPointImg: {
+              url: '/assets/szxc/assets/img/center.2466fb18.png'
+            },
+            pointsImg: {
+              url: '/assets/szxc/assets/img/video_icon.e99a5bfd.png'
+            }
+          }
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>
